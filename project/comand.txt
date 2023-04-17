@@ -1,0 +1,6 @@
+alias rs="python manage.py runserver"
+alias cs="python manage.py collectstatic --noinput"
+alias venv="source venv/Scripts/activate"
+alias mg="python manage.py makemigrations"
+alias m="python manage.py migrate"
+alias csu="python manage.py createsuperuser"

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← назад</button>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  {% comment %} <input type="submit" value="Save"> {% endcomment %}
+  <button class="btn btn-primary col-5" type="submit">Сохранить</button>
+</form>
+{% endblock %}

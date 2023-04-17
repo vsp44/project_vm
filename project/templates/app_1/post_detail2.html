@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% comment %} {% block content %}
+
+<h1>{{object.name}}</h1>
+<h2 class="last">Дата: {{object.pub_date|date:"d-m-Y H:i:s"}}</h2>
+<h2>{{object.author}}</h2>
+<h3>{{object.text|linebreaks}}<h3>
+{#<center><a href="{% url 'like' %}"><img src="../../static/women/images/like.png"></a></center>#}
+{% endblock %} {% endcomment %}
+{% comment %} <style>
+img.share-yt {
+	width: 100%;
+	height: 30px;
+	background: url('../../static/images/like.png') no-repeat 0 0
+}
+img.share-yt:hover {
+	width: 100%;
+	height: 30px;
+	background: url('../../static/images/like.png') no-repeat 0 -30px
+}
+</style> {% endcomment %}
+{% block content %}
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← назад</button>
+    <br><br>
+    {{object.name}}
+    <br><br>
+    {{object.text}}
+    <br><br>
+    {{object.author}}
+    <br><br>
+    {{object.pub_date}}
+    <br><br>
+    {% if post.images %}
+    <p><img height="250" width="1000" class="img-article-left" src="{{post.images.url}}"></p>
+    {% else %}
+      {% comment %} <img height="500" width="500" src={{ object.images }}> {% endcomment %}
+    {% endif %}
+
+{% if object.author == user.username %}
+rrr
+{% else %}
+{% if request.user.is_authenticated %}
+<!-- LIKES -->
+{% if user.is_authenticated %}
+
+  <form action="{% url 'blogpost_like' object.id %}" method="POST">
+    {% csrf_token %}
+
+
+    {% if post_is_liked %}
+    <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-1"><img width='100' height='100px' src="https://phonoteka.org/uploads/posts/2021-04/1619330830_1-phonoteka_org-p-serdechko-kartinka-bez-fona-3.png"></button>
+    {% else %}
+    {% comment %} <a class="share-yt" href="{{object.id}}"></a> {% endcomment %}
+
+    <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-1"><img width='100' height='100px' src="https://abrakadabra.fun/uploads/posts/2022-01/thumbs/1641202651_26-abrakadabra-fun-p-beloe-serdtse-smailik-png-40.png"></button>
+    {% endif %}
+  </form>
+{% else %}
+  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this article!</a><br>
+{% endif %}
+<strong>{{ number_of_likes }} Like{{ number_of_likes|pluralize }}</strong>
+<!-- dislikes -->
+{% if user.is_authenticated %}
+  <form action="{% url 'blogpost_dislikes' object.id %}" method="POST">
+    {% csrf_token %}
+
+    {% if post_is_dislikes %}
+    <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-1"><img width='100' height='100px' src="https://pngimg.com/uploads/dislike/dislike_PNG15.png"></button>
+    {% else %}
+    <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-1"><img width='100' height='100px' src="https://down.imgspng.com/download/0720/dislike_PNG78.png"></button>
+    {% endif %}
+  </form>
+{% else %}
+  <a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to dislikes this article!</a><br>
+{% endif %}
+<strong>{{ number_of_dislikes }} dislikes{{ number_of_dislikes|pluralize }}</strong>
+{% endif %}
+{% comment %}  {% endcomment %}
+    {% comment %} {% if following %}
+    <a
+      class="btn btn-lg btn-light"
+      href="{% url 'post_detail' post.id %}"
+       role="button"
+    >
+          Убрать лайк
+    </a>
+  {% else %}
+      <a
+        class="btn btn-lg btn-primary"
+        href="{% url 'post_detail' post.id %}"
+         role="button"
+      >
+          Лайк
+      </a>
+      {% endif %}
+      <br><br> {% endcomment %}
+  {% comment %}  {% endcomment %}
+
+{% if user.username == object.author %}
+<form method="delete" action="{% url 'post_delete' post.id %}">
+    {% comment %} <input type="submit" value="delete"> {% endcomment %}
+    <button class="btn btn-primary col-1" type="submit">Удалить</button>
+</form>
+<br>
+<form method="delete" action="{% url 'post_update' post.id %}">
+    {% comment %} <input type="submit" value="update"> {% endcomment %}
+    <button class="btn btn-primary col-1" type="submit">Редактировать</button>
+</form>
+{% else %}
+<form method="delete" action="{% url 'post_delete' post.id %}">
+    {% comment %} <input type="submit" value="delete"> {% endcomment %}
+    <button class="btn btn-primary col-2" type="submit">Удалить</button>
+</form>
+<br>
+<form method="delete" action="{% url 'post_update' post.id %}">
+    {% comment %} <input type="submit" value="update"> {% endcomment %}
+    <button class="btn btn-primary col-2" type="submit">Редактировать</button>
+</form>
+{% endif %}
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<head>
+	<script>
+		$('.likes-button').click(function(){
+			var ansid;
+			ansid = $(this).attr("data-ansid");
+					$.get('/app_1/views/add_like/', {answer_id: ansid}, function(data){
+				$('#like_count').html(data);
+			$('#likes').hide();
+		});
+		});
+	</script>
+</head>
+
+<ul class="post">
+	{% for post in object_list %}
+				<h2>{{post.name}}</h2>
+				<div class="article-panel">
+				 <p class="last">Дата: {{post.pub_date|date:"d-m-Y H:i:s"}}</p>
+				   <p>Автор поста: {% comment %}<a href="{% url 'author' post.author_id %}">{{post.author}}</a>{% endcomment %}{{post.author}}</p>
+		</div>
+			{% autoescape on %}
+			Текст поста:{{post.text|linebreaks|truncatewords:5}}
+			{% endautoescape %}
+			<div class="clear"></div>
+			<p><a href="{% url 'post_detail' post.id %}">Читать пост</a></p>
+			{% comment %} {% if following %}
+			<a
+			  class="btn btn-lg btn-light"
+			  href="{% url 'index' user.id %}" role="button"
+			>
+			  	Убрать лайк
+			</a>
+		  {% else %}
+			  <a
+				class="btn btn-lg btn-primary"
+				href="{% url 'index' user.id %}" role="button"
+			  >
+			  	Лайк
+			  </a>
+		  {% endif %} {% endcomment %}
+	{% endfor %}
+</ul>
+{% endblock %}

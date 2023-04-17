@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% comment %} {% block title %}Зарегистрироваться{% endblock %} {% endcomment %}
+{% block content %}
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← Back</button>
+  <form method="post"  enctype="multipart/form-data" action="{% url 'signup' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {% comment %} <input type="submit" value="Register"> {% endcomment %}
+    <button class="btn btn-primary col-5" type="submit">Зарегистрироваться</button>
+  </form>
+{% endblock %}

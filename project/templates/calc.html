@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+    <center><h1>Калькулятор</h1></center>
+    <div class="row mt-5">
+
+        <div class="col-1"></div>
+        <div class="col-6  shadow">
+          {% comment %} <div class="container">
+            <img src="https://bluelightcard.thebigjourneycompany.com/uploads/news-images/4644665-northern-lights.jpg" alt="Snow" style="width:100%">
+            <button class="btn">Button</button>
+          </div> {% endcomment %}
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Число 1</label>
+                  <input type="number" class="form-control" name="num1">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Число 2</label>
+                  <input type="number" class="form-control" name="num2" >
+                </div>
+              <div class="btn-group">
+                <button type="submit" name="add" class="button button2">Сложить</button>
+                <button type="submit" name="sub" class="button button2">Вычесть</button>
+                <button type="submit" name="div" class="button button2">Делить</button>
+                <button type="submit" name="mul" class="button button2">Умножить</button>
+              </div>
+              <br></form>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-2 shadow">
+            <h3>Результат</h3>
+            <br>
+            <h4>{{result}}</h4>
+            <br>
+        </div>
+    </div>
+
+{% endblock content %}

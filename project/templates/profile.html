@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← назад</button>
+<h1>Привет, {{user.username}}.</h1>
+<h2>Время регистрации: {{user.last_login|date:"d-m-Y H:i:s"}}</h2>
+
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+{{form.as_p}}
+{% comment %} {% for f in form %}
+<p>
+<label class="dorm_label" dor="{{f.id_for_label}}">
+    {{f.label}}
+</label>
+{{f}}
+</p>
+<div class="form_error">{{f.error}}</div> {% endcomment %}
+{% comment %} {% endfor %} {% endcomment %}
+<input type="submit" value="Сохранить">
+</form>
+
+{% endblock %}

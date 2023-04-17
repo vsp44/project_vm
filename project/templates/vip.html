@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← назад</button>
+<h1>Получите VIP</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn btn-primary col-1" type="submit">Сохранить</button>
+    {% comment %}  href="{% url 'ind' %}" {% endcomment %}
+</form>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Детальная{% endblock %}
+{% block content %}
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← назад</button>
+<form method="post">{% csrf_token %}
+    <p>Вы действительно хотите удалить "{{ object }}"?</p>
+    {{ form }}
+    {% comment %} <input type="submit" value="Remove"> {% endcomment %}
+    <button class="btn btn-primary col-5" type="submit">Удалять</button>
+</form>
+
+{% endblock %}

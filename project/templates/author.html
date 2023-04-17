@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<button class="btn btn-primary col-5" type="button" onClick="javascript:history.go(-1);">← Back</button>
+<p><img height="250" width="400" src="{{object.user.avatar.url}}"></p>
+<h1>Информация о пользователе: {{object.user.first_name}} {{object.user.last_name}}</h1>
+<h3>Дата регистрации: {{object.date_joined}}</h3>
+
+{% endblock %}

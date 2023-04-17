@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+  {% comment %} {% load thumbnail %}
+        {% block title %}
+          {{ post.text|truncatechars:30 }}
+        {% endblock %} {% endcomment %}
+    <body>
+      <main>
+        {% block content %}
+        <div class="row">
+          <aside class="col-12 col-md-3">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                Дата публикации: {{ post.pub_date|date:"d E Y" }}
+              </li>
+              {% comment %} {% if post.group %}
+              <li class="list-group-item">
+                  Группа: {{ post.group.title }}
+                <a href="{% url 'posts:group_list' post.group.slug %}">
+                  все записи группы
+                </a>
+              {% endif %}
+                </li> {% endcomment %}
+                <li class="list-group-item">
+                  Автор: {{ post.author }}
+                </li>
+                {% comment %} {% thumbnail post.image "960x339" crop="center" upscale=True as im %}
+                <img class="card-img my-2" src="{{ im.url }}">
+                {% endthumbnail %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                Всего постов автора:  <span >{{ of_posts }}</span>
+                </li>
+              <li class="list-group-item">
+                <a href="{% url 'posts:profile' post.author %}">
+                  все посты пользователя
+                </a> {% endcomment %}
+
+              {% comment %} </li> {% endcomment %}
+              {% if request.user == post.author %}
+              <li class="list-group-item">
+                <a href="{% url 'post_update' post.id %}">
+                  Редактировать пост
+                </a>
+              {% endif %}
+              </li>
+
+              {% if request.user == post.author %}
+              <li class="list-group-item">
+                <a href="{% url 'post_delete' post.id %}">
+                  Удалить пост
+                </a>
+              {% endif %}
+              </li>
+              <!-- LIKES -->
+{% if user.is_authenticated %}
+
+<form action="{% url 'blogpost_like' object.id %}" method="POST">
+  {% csrf_token %}
+
+
+  {% if post_is_liked %}
+  <button type="submit" name="blogpost_id" value="{{object.id}}" class="like"><img width='100' height='100px' src="{% static '/images/like.png' %}"></button>
+  {% else %}
+  {% comment %} <a class="share-yt" href="{{object.id}}"></a> {% endcomment %}
+
+  <button type="submit" name="blogpost_id" value="{{object.id}}" class="like"><img width='100' height='100px' src="{% static '/images/unlike.png' %}"></button>
+  {% endif %}
+</form>
+{% else %}
+<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to like this article!</a><br>
+{% endif %}
+<strong>{{ number_of_likes }} Like{{ number_of_likes|pluralize }}</strong>
+<!-- dislikes -->
+{% comment %} {% if user.is_authenticated %}
+<form action="{% url 'blogpost_dislikes' object.id %}" method="POST">
+  {% csrf_token %}
+
+  {% if post_is_dislikes %}
+  <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-5"><img width='100' height='100px' src="https://pngimg.com/uploads/dislike/dislike_PNG15.png"></button>
+  {% else %}
+  <button type="submit" name="blogpost_id" value="{{object.id}}" class="btn btn-primary col-5"><img width='100' height='100px' src="https://down.imgspng.com/download/0720/dislike_PNG78.png"></button>
+  {% endif %}
+</form>
+{% else %}
+<a class="btn btn-outline-info" href="{% url 'login' %}?next={{request.path}}">Log in to dislikes this article!</a><br>
+{% endif %}
+<strong>{{ number_of_dislikes }} dislikes{{ number_of_dislikes|pluralize }}</strong> {% endcomment %}
+
+
+            </ul>
+          </aside>
+          <article class="col-12 col-md-9">
+            <p>
+            {{ post.text }}
+            </p>
+            {% include 'app_1/includes/comments.html' %}
+          </article>
+        </div>
+        {% endblock %}
+      </main>
+    </body>
